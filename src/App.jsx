@@ -3,45 +3,34 @@ import './App.css'
 
 function App() {
   const [expenses, setExpenses] = useState([
-    { id: 1, name: 'Rent', amount: 1200 },
-    { id: 2, name: 'Groceries', amount: 300 },
-    { id: 3, name: 'Utilities', amount: 150 },
-    { id: 4, name: 'Transportation', amount: 100 },
-    { id: 5, name: 'Entertainment', amount: 200 }
+    { id: 1, name: 'Rent', description: 'rent', category: 'bill', amount: 1200 },
+    { id: 2, name: 'Groceries', description: 'food stuff', category: 'bill', amount: 300 },
+    { id: 3, name: 'Utilities', description: 'shopping', category: 'bill', amount: 150 },
+    { id: 4, name: 'Transport', description: 'fuel', category: 'bill', amount: 100 },
+    { id: 5, name: 'Entertainment', description: 'internet & tv', category: 'bill', amount: 200 }
   ])
 
   const [newExpense, setNewExpense] = useState(
-    { name: '', amount: '' }
+    { name: '', amount: '', description: '', category: '', date: '' }
   )
 
   const [searchTerm, setSearchTerm] = useState('');
 
-  const handleInputChange = (event) => {
-    const { name, value } = event.target;
-    setNewExpense({ ...newExpense, [name]: value });
-  };
-
-  const addExpense = (event) => {
-    event.preventDefault();
-    if (newExpense.name && newExpense.amount && newExpense.date) {
-      setExpenses([
-        ...expenses,
-        {
-          id: Date.now(),
-          name: newExpense.name,
-          amount: parseFloat(newExpense.amount),
-          date: newExpense.date,
-        },
-      ]);
-      setNewExpense({ name: '', amount: '', date: '' });
-    }
-  };
-
+  
   const filteredExpenses = expenses.filter((expense) =>
-    expense.name.toLowerCase().includes(searchTerm.toLowerCase())
+    expense.name.toLowerCase().includes(searchTerm.toLowerCase()) &&
+    expense.description.toLowerCase().includes(searchTerm.toLowerCase())
   );
 
-  
+  return (
+    <div className="container">
+      <h1>Expense Tracker</h1>
+      <SearchBar onSearch={handleSearch} />
+      <ExpenseForm onAddExpense={addExpense} />
+      <ExpenseTable expenses={filteredExpenses} />
+    </div>
+  );
+};
 }
 
-export default App
+export default App;
