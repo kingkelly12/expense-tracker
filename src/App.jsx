@@ -1,35 +1,47 @@
 import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
 import './App.css'
 
 function App() {
-  const [count, setCount] = useState(0)
+  const [expenses, setExpenses] = useState([
+    { id: 1, name: 'Rent', amount: 1200 },
+    { id: 2, name: 'Groceries', amount: 300 },
+    { id: 3, name: 'Utilities', amount: 150 },
+    { id: 4, name: 'Transportation', amount: 100 },
+    { id: 5, name: 'Entertainment', amount: 200 }
+  ])
 
-  return (
-    <>
-      <div>
-        <a href="https://vite.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
-      </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.jsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
-    </>
+  const [newExpense, setNewExpense] = useState(
+    { name: '', amount: '' }
   )
+
+  const [searchTerm, setSearchTerm] = useState('');
+
+  const handleInputChange = (event) => {
+    const { name, value } = event.target;
+    setNewExpense({ ...newExpense, [name]: value });
+  };
+
+  const addExpense = (event) => {
+    event.preventDefault();
+    if (newExpense.name && newExpense.amount && newExpense.date) {
+      setExpenses([
+        ...expenses,
+        {
+          id: Date.now(),
+          name: newExpense.name,
+          amount: parseFloat(newExpense.amount),
+          date: newExpense.date,
+        },
+      ]);
+      setNewExpense({ name: '', amount: '', date: '' });
+    }
+  };
+
+  const filteredExpenses = expenses.filter((expense) =>
+    expense.name.toLowerCase().includes(searchTerm.toLowerCase())
+  );
+
+  
 }
 
 export default App
