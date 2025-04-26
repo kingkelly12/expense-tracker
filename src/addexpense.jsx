@@ -1,33 +1,51 @@
-import React, { Component } from 'react'
-import { useState } from 'react';
-import './App.css';
+import React, { useState } from 'react'
+import './App.css'
 
+const AddExpense = ({ onAddExpense }) => {
+  const [expense, setExpense] = useState({
+    name: '',
+    description: '',
+    category: '',
+    amount: '',
+    date: ''
+  })
 
-  const addExpense = (event) => {
-    event.preventDefault();
-    if (newExpense.name && newExpense.description && newExpense.category && newExpense.amount && newExpense.date) {
-      setExpenses([
-        ...expenses,
-        {
-          id: Date.now(),
-          name: newExpense.name,
-          description: newExpense.description,
-          category: newExpense.category,
-          amount: parseFloat(newExpense.amount),
-          date: newExpense.date,
-        },
-      ]);
-      setNewExpense({ name: '', description: '', category: '', amount: '', date: '' });
+  const handleChange = (e) => {
+    const { name, value } = e.target
+    setExpense((prev) => ({
+      ...prev,
+      [name]: value
+    }))
+  }
+
+  const handleSubmit = (e) => {
+    e.preventDefault()
+    if (
+      expense.name &&
+      expense.description &&
+      expense.category &&
+      expense.amount &&
+      expense.date
+    ) {
+      onAddExpense({
+        name: expense.name,
+        description: expense.description,
+        category: expense.category,
+        amount: parseFloat(expense.amount),
+        date: expense.date
+      })
+      setExpense({
+        name: '',
+        description: '',
+        category: '',
+        amount: '',
+        date: ''
+      })
     }
-  };
-
-  const handleInputChange = (event) => {
-    const { name, value } = event.target;
-    setNewExpense({ ...newExpense, [name]: value });
-  };
+  }
 
   return (
-    <form onSubmit={handleSubmit}>
+    <form onSubmit={handleSubmit} className="add-expense-form">
       <input
         type="text"
         name="name"
@@ -43,6 +61,13 @@ import './App.css';
         onChange={handleChange}
       />
       <input
+        type="text"
+        name="category"
+        placeholder="Enter Expense Category"
+        value={expense.category}
+        onChange={handleChange}
+      />
+      <input
         type="number"
         name="amount"
         placeholder="Enter Expense Amount"
@@ -55,11 +80,10 @@ import './App.css';
         placeholder="Enter Expense Date"
         value={expense.date}
         onChange={handleChange}
-        />
+      />
       <button type="submit">Add Expense</button>
     </form>
-  );
-;
+  )
+}
 
-
-export default AddExpense;
+export default AddExpense

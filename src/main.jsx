@@ -9,9 +9,6 @@ import SearchBar from './searchbar.jsx'
 createRoot(document.getElementById('root')).render(
   <StrictMode>
     <App />
-    <AddExpense />
-    <ExpenseTable />
-    <SearchBar  />
   </StrictMode>,
 )
 
